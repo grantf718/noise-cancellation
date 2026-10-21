@@ -58,8 +58,9 @@ def play_sound_callback(outdata, frames, time, status):
 times = np.linspace(0, 0.01, 1000) # 10ms interval
 fig, axes = plt.subplots(2, 1, sharex=True, figsize=(8, 8)) # Share x axis so graphs align
 
-wave1 = axes[0].plot(times, amplitude1 * np.sin(2 * np.pi * frequency1 * times + phase1))
-wave2 = axes[1].plot(times, amplitude2 * np.sin(2 * np.pi * frequency2 * times + phase2))
+wave1, = axes[0].plot(times, amplitude1 * np.sin(2 * np.pi * frequency1 * times + phase1)) 
+wave2, = axes[1].plot(times, amplitude2 * np.sin(2 * np.pi * frequency2 * times + phase2))
+# ^^^ The commas are to unpack the single line we draw from the plot array
 
 for ax in axes:
     ax.set_ylim(-1, 1) # Limit y axis to 1, the max amplitude
@@ -81,30 +82,42 @@ slider_amplitude2 = Slider(fig.add_axes([0.25, 0.17, 0.62, 0.025]), "Amplitude",
 slider_frequency2 = Slider(fig.add_axes([0.25, 0.145, 0.62, 0.025]), "Frequency", 20, 1000, valinit=frequency2, valstep=1)
 slider_phase2 = Slider(fig.add_axes([0.25, 0.12, 0.62, 0.025]), "Phase", 0, np.pi, valinit=phase2, valfmt="%.2f rad", valstep=np.pi / 16)
 
+# Update plot data to reflect changes made to waveform parameters
+def update_plots():
+    wave1.set_ydata(amplitude1 * np.sin(2 * np.pi * frequency1 * times + phase1))
+    wave2.set_ydata(amplitude2 * np.sin(2 * np.pi * frequency2 * times + phase2))
+    fig.canvas.draw_idle()
+
 # Define setters for slider updates
 def set_amplitude1(value):
     global amplitude1
     amplitude1 = value
+    update_plots()
 
 def set_frequency1(value):
     global frequency1
     frequency1 = value
+    update_plots()
 
 def set_phase1(value):
     global phase1
     phase1 = value
+    update_plots()
 
 def set_amplitude2(value):
     global amplitude2
     amplitude2 = value
+    update_plots()
 
 def set_frequency2(value):
     global frequency2
     frequency2 = value
+    update_plots()
 
 def set_phase2(value):
     global phase2
     phase2 = value
+    update_plots()
 
 # Call setters upon slider update
 slider_amplitude1.on_changed(set_amplitude1)
