@@ -139,7 +139,6 @@ with sd.OutputStream(
     samplerate=sample_rate, 
     channels=2, 
     callback=play_sound_callback,
-    latency="low"
 ):
     plt.show()
 
