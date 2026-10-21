@@ -22,12 +22,12 @@ def play_sound_callback(outdata, frames, time, status):
     # Callback parameters:
     # Outdata is a 2D writable audio buffer where we write the samples
     # Frames are the number of samples needed per channel, automatically handled by sounddevice
-    # Time and status are optional
+    # Time and status are required callback parameters but using them is optional
 
     # Refer to global position variables in order to update them
     global position1, position2
 
-    # Create an array of frames and divide by sample rate to get the timestamps when each sample will play
+    # Create an array of frames and divide by sample rate to get the relative timestamps of when each sample will play
     frame_list = np.arange(frames)
     timestamps = frame_list / sample_rate
 
