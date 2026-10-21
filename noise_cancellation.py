@@ -1,5 +1,6 @@
 ﻿import numpy as np
 import sounddevice as sd
+import matplotlib.pyplot as plt
 
 sample_rate = 44100
 
@@ -47,6 +48,14 @@ def play_sound_callback(outdata, frames, time, status):
     position1 = (position1 + 2 * np.pi * frequency1 * frames / sample_rate) % (2 * np.pi)
     position2 = (position2 + 2 * np.pi * frequency2 * frames / sample_rate) % (2 * np.pi)
 
+# Plot waveforms
+times = np.linspace(0, 0.01, 1000) # 10ms interval
+fig, axes = plt.subplots(2, 1, sharex=True) # Share x axis so graphs align
+wave1 = axes[0].plot(times, amplitude1 * np.sin(2 * np.pi * frequency1 * times + phase1))
+wave2 = axes[1].plot(times, amplitude2 * np.sin(2 * np.pi * frequency2 * times + phase2))
+axes[0].set_ylim(-1, 1) # Limit y axis to 1, the maximum amplitude
+axes[1].set_ylim(-1, 1)
+
 # Sounddevice's OutputStream uses a callback function to continuously play audio with data being updated live
 with sd.OutputStream(
     samplerate=sample_rate, 
@@ -54,4 +63,4 @@ with sd.OutputStream(
     callback=play_sound_callback,
     latency="low"
 ):
-    input("Press Enter to stop.\n")
+    plt.show()
