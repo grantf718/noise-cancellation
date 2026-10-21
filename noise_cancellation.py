@@ -68,13 +68,47 @@ axes[1].set_position([0.14, 0.27, 0.8, 0.23])
 
 # Wave 1 sliders
 slider_amplitude1 = Slider(fig.add_axes([0.25, 0.65, 0.62, 0.025]), "Amplitude", 0, 1, valinit=amplitude1, valstep=0.1)
-slider_frequency1 = Slider(fig.add_axes([0.25, 0.625, 0.62, 0.025]), "Frequency", 20, 2000, valinit=frequency1, valstep=1)
-slider_phase1 = Slider(fig.add_axes([0.25, 0.60, 0.62, 0.025]), "Phase", 0, np.pi, valinit=phase1, valfmt="%.2f rad", valstep=np.pi / 8)
+slider_frequency1 = Slider(fig.add_axes([0.25, 0.625, 0.62, 0.025]), "Frequency", 20, 2000, valinit=frequency1, valstep=10)
+slider_phase1 = Slider(fig.add_axes([0.25, 0.60, 0.62, 0.025]), "Phase", 0, np.pi, valinit=phase1, valfmt="%.2f rad", valstep=np.pi / 16)
 
 # Wave 2 sliders
 slider_amplitude2 = Slider(fig.add_axes([0.25, 0.17, 0.62, 0.025]), "Amplitude", 0, 1, valinit=amplitude2, valstep=0.1)
-slider_frequency2 = Slider(fig.add_axes([0.25, 0.145, 0.62, 0.025]), "Frequency", 20, 2000, valinit=frequency2, valstep=1)
-slider_phase2 = Slider(fig.add_axes([0.25, 0.12, 0.62, 0.025]), "Phase", 0, np.pi, valinit=phase2, valfmt="%.2f rad", valstep=np.pi / 8)
+slider_frequency2 = Slider(fig.add_axes([0.25, 0.145, 0.62, 0.025]), "Frequency", 20, 2000, valinit=frequency2, valstep=10)
+slider_phase2 = Slider(fig.add_axes([0.25, 0.12, 0.62, 0.025]), "Phase", 0, np.pi, valinit=phase2, valfmt="%.2f rad", valstep=np.pi / 16)
+
+# Define setters for slider updates
+def set_amplitude1(value):
+    global amplitude1
+    amplitude1 = value
+
+def set_frequency1(value):
+    global frequency1
+    frequency1 = value
+
+def set_phase1(value):
+    global phase1
+    phase1 = value
+
+def set_amplitude2(value):
+    global amplitude2
+    amplitude2 = value
+
+def set_frequency2(value):
+    global frequency2
+    frequency2 = value
+
+def set_phase2(value):
+    global phase2
+    phase2 = value
+
+# Call setters upon slider update
+slider_amplitude1.on_changed(set_amplitude1)
+slider_frequency1.on_changed(set_frequency1)
+slider_phase1.on_changed(set_phase1)
+
+slider_amplitude2.on_changed(set_amplitude2)
+slider_frequency2.on_changed(set_frequency2)
+slider_phase2.on_changed(set_phase2)
 
 # Sounddevice's OutputStream uses a callback function to continuously play audio with data being updated live
 with sd.OutputStream(
