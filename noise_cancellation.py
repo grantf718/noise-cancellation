@@ -59,7 +59,7 @@ times = np.linspace(0, 0.01, 1000) # 10ms interval
 fig, axes = plt.subplots(2, 1, sharex=True, figsize=(8, 7.44)) # Share x axis so graphs align
 
 wave1, = axes[0].plot(times, amplitude1 * np.sin(2 * np.pi * frequency1 * times + phase1)) 
-wave2, = axes[1].plot(times, amplitude2 * np.sin(2 * np.pi * frequency2 * times + phase2))
+wave2, = axes[1].plot(times, amplitude2 * np.sin(2 * np.pi * frequency2 * times + phase2), color="tab:orange")
 # ^^^ The commas are to unpack the single line we draw from the plot array
 
 for ax in axes:
@@ -67,22 +67,24 @@ for ax in axes:
     ax.grid()
     ax.set_ylabel("Amplitude")
 axes[1].set_xlabel("Time (sec)")
+axes[0].set_title("Wave 1")
+axes[1].set_title("Wave 2")
 
 # Add sliders underneath each plot
 axes[0].set_position([0.14, 0.71, 0.8, 0.25])
 axes[1].set_position([0.14, 0.27, 0.8, 0.30])
 
 # Wave 1 sliders
-slider_amplitude1 = Slider(fig.add_axes([0.25, 0.65, 0.62, 0.025]), "Amplitude", 0, 1, valinit=amplitude1, valstep=0.05)
-slider_frequency1 = Slider(fig.add_axes([0.25, 0.625, 0.62, 0.025]), "Frequency", 20, 1000, valinit=frequency1, valstep=1)
-slider_phase1 = Slider(fig.add_axes([0.25, 0.60, 0.62, 0.025]), "Phase", 0, np.pi, valinit=phase1, valfmt="%.2f rad", valstep=np.pi / 16)
+slider_amplitude1 = Slider(fig.add_axes([0.25, 0.65, 0.62, 0.025]), "Amplitude", 0, 1, valinit=amplitude1, valstep=0.05, color="tab:blue")
+slider_frequency1 = Slider(fig.add_axes([0.25, 0.625, 0.62, 0.025]), "Frequency", 20, 1000, valinit=frequency1, valstep=1, color="tab:blue")
+slider_phase1 = Slider(fig.add_axes([0.25, 0.60, 0.62, 0.025]), "Phase", 0, np.pi, valinit=phase1, valfmt="%.2f rad", valstep=np.pi / 16, color="tab:blue")
 
 # Wave 2 sliders
-slider_amplitude2 = Slider(fig.add_axes([0.25, 0.17, 0.62, 0.025]), "Amplitude", 0, 1, valinit=amplitude2, valstep=0.05)
-slider_frequency2 = Slider(fig.add_axes([0.25, 0.145, 0.62, 0.025]), "Frequency", 20, 1000, valinit=frequency2, valstep=1)
-slider_phase2 = Slider(fig.add_axes([0.25, 0.12, 0.62, 0.025]), "Phase", 0, np.pi, valinit=phase2, valfmt="%.2f rad", valstep=np.pi / 16)
+slider_amplitude2 = Slider(fig.add_axes([0.25, 0.17, 0.62, 0.025]), "Amplitude", 0, 1, valinit=amplitude2, valstep=0.05, color="tab:orange")
+slider_frequency2 = Slider(fig.add_axes([0.25, 0.145, 0.62, 0.025]), "Frequency", 20, 1000, valinit=frequency2, valstep=1, color="tab:orange")
+slider_phase2 = Slider(fig.add_axes([0.25, 0.12, 0.62, 0.025]), "Phase", 0, np.pi, valinit=phase2, valfmt="%.2f rad", valstep=np.pi / 16, color="tab:orange")
 
-# Trim the bottom margin while preserving the layout
+# Trim the bottom margins
 for ax in fig.axes:
     left, bottom, width, height = ax.get_position().bounds
     ax.set_position([left, (bottom - 0.07) / 0.93, width, height / 0.93])
@@ -141,5 +143,7 @@ with sd.OutputStream(
     latency="low"
 ):
     plt.show()
+
+
 
 
